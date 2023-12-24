@@ -9,9 +9,18 @@ terraform {
   # }
 }
 
-provider "google" {
+locals {
   project = "columbia-sps-tech-foundations"
+}
+
+provider "google" {
+  project = local.project
   region  = "us-central1"
+
+  # needed for
+  # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/billing_budget
+  user_project_override = true
+  billing_project       = local.project
 }
 
 data "google_project" "project" {}
