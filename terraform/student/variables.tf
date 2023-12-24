@@ -1,6 +1,10 @@
-variable "org_id" {}
+variable "org_id" {
+  type = string
+}
 
-variable "uni" {}
+variable "uni" {
+  type = string
+}
 
 variable "email_override" {
   default     = null
