@@ -13,3 +13,14 @@ provider "google" {
   project = "columbia-sps-tech-foundations"
   region  = "us-central1"
 }
+
+module "test_student" {
+  source = "./student"
+
+  uni = "teststudent"
+}
+
+moved {
+  from = google_project.test_student
+  to   = module.test_student.google_project.project
+}
