@@ -14,13 +14,11 @@ provider "google" {
   region  = "us-central1"
 }
 
+data "google_project" "project" {}
+
 module "test_student" {
   source = "./student"
 
-  uni = "teststudent"
-}
-
-moved {
-  from = google_project.test_student
-  to   = module.test_student.google_project.project
+  org_id = data.google_project.project.org_id
+  uni    = "teststudent"
 }
