@@ -1,6 +1,6 @@
 locals {
   students = csvdecode(file("${path.module}/students.csv"))
-  unis     = toset([for student in local.students : student.UNI])
+  unis     = toset([for student in local.students : student.Uni])
 }
 
 module "students" {

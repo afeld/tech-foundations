@@ -10,4 +10,9 @@
    gcloud auth application-default set-quota-project columbia-sps-tech-foundations
    ```
 
-1. Download a CSV of the student information and save as `terraform/students.csv`.
+1. Download the student list
+   1. Go to the [SSOL](https://ssol.columbia.edu/)
+   1. Click `Class List`
+   1. Click `See Roster`
+   1. Click `Download comma delimited roster with Excel extension.`
+   1. Move to `terraform/students.csv`
