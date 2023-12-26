@@ -3,7 +3,7 @@ terraform {
 
   # store the state remotely
   # https://developer.hashicorp.com/terraform/language/settings/backends/gcs
-  # managed in bucket_backend.tf
+  # managed in backend.tf
   # backend "gcs" {
   #   bucket = "TODO"
   # }
@@ -11,11 +11,12 @@ terraform {
 
 locals {
   project = "columbia-sps-tech-foundations"
+  region  = "us-central1"
 }
 
 provider "google" {
   project = local.project
-  region  = "us-central1"
+  region  = local.region
 
   # needed for
   # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/billing_budget
