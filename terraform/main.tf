@@ -4,9 +4,9 @@ terraform {
   # store the state remotely
   # https://developer.hashicorp.com/terraform/language/settings/backends/gcs
   # managed in backend.tf
-  # backend "gcs" {
-  #   bucket = "TODO"
-  # }
+  backend "gcs" {
+    bucket = "columbia-sps-tech-mgmt-terraform"
+  }
 }
 
 locals {
