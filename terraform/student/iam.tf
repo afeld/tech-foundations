@@ -8,6 +8,12 @@ resource "google_project_iam_member" "student" {
   member  = "user:${local.email}"
 }
 
+resource "google_project_iam_member" "student_billing" {
+  project = google_project.student.project_id
+  role    = "roles/billing.projectManager"
+  member  = "user:${local.email}"
+}
+
 # creator (person running Terraform) automatically added as an Owner
 
 resource "google_project_iam_member" "associates" {
