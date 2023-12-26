@@ -8,7 +8,7 @@ data "google_billing_account" "acct" {
 }
 
 resource "google_billing_budget" "budget" {
-  # data.google_project.project.billing_account is null for some reason, so have to retrieve the billing account above
+  # data.google_project.root_project.billing_account is null for some reason, so have to retrieve the billing account above
   billing_account = data.google_billing_account.acct.id
   display_name    = "Credit Monitoring"
 

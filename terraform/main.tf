@@ -10,18 +10,18 @@ terraform {
 }
 
 locals {
-  project = "columbia-sps-tech-foundations"
-  region  = "us-central1"
+  root_project = "columbia-sps-tech-foundations"
+  region       = "us-central1"
 }
 
 provider "google" {
-  project = local.project
+  project = local.root_project
   region  = local.region
 
   # needed for
   # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/billing_budget
   user_project_override = true
-  billing_project       = local.project
+  billing_project       = local.root_project
 }
 
-data "google_project" "project" {}
+data "google_project" "root_project" {}
