@@ -8,6 +8,8 @@ resource "google_project_iam_member" "student" {
   member  = "user:${local.email}"
 }
 
+# creator (person running Terraform) automatically added as an Owner
+
 resource "google_project_iam_member" "associates" {
   for_each = toset([
     "as6950",
@@ -16,6 +18,6 @@ resource "google_project_iam_member" "associates" {
   ])
 
   project = google_project.student.project_id
-  role    = "roles/editor"
+  role    = "roles/owner"
   member  = "user:${each.key}@columbia.edu"
 }
