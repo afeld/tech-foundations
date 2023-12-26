@@ -4,13 +4,7 @@ locals {
 
 resource "google_project_iam_member" "student" {
   project = google_project.student.project_id
-  role    = "roles/editor"
-  member  = "user:${local.email}"
-}
-
-resource "google_project_iam_member" "student_billing" {
-  project = google_project.student.project_id
-  role    = "roles/billing.projectManager"
+  role    = "roles/owner"
   member  = "user:${local.email}"
 }
 
