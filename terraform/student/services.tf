@@ -3,7 +3,8 @@ resource "google_project_service" "default" {
 
   for_each = toset([
     "analyticshub.googleapis.com",
-    "bigquery.googleapis.com"
+    "bigquery.googleapis.com",
+    "cloudaicompanion.googleapis.com"
   ])
   service = each.value
 }
