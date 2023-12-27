@@ -3,6 +3,7 @@ resource "google_project_service" "default" {
     "billingbudgets.googleapis.com",
     "cloudbilling.googleapis.com",
     "cloudresourcemanager.googleapis.com",
+    "dns.googleapis.com",
     "serviceusage.googleapis.com"
   ])
   service = each.value
