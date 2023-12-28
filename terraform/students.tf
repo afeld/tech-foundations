@@ -8,9 +8,8 @@ module "students" {
 
   for_each = local.unis
 
-  org_id         = data.google_project.root_project.org_id
-  uni            = each.key
-  email_override = "aidan.feldman@gmail.com"
+  org_id = data.google_project.root_project.org_id
+  uni    = each.key
 }
 
 module "test_student" {
