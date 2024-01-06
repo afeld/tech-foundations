@@ -4,6 +4,8 @@ resource "google_project" "student" {
   org_id     = var.org_id
 
   lifecycle {
+    # we don't control the billing account, so ignore when set by the student
+    ignore_changes  = [billing_account]
     prevent_destroy = true
   }
 }
