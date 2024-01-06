@@ -52,6 +52,6 @@ A [Project](https://cloud.google.com/docs/overview#projects) has been created fo
 
 ### Use of Google Cloud outside this class
 
-If you're using Google Cloud for something outside of this class, we suggest [creating a separate Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) to keep things isolated. You are welcome to associate it with the `Billing Account for Education` to use those credits.
+If you're using Google Cloud for something outside of this class, we suggest [creating a separate Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) to keep things isolated. The `Billing Account for Education` is yours, so you're welcome to [associate it with other Projects](https://cloud.google.com/billing/docs/how-to/modify-project#how-to-change-ba) to use those credits.
 
 We won't use the full $50 credit for this class, so you're welcome to take advantage of the remainder for other things. If you use it up, you'll start spending against your [Free Trial](https://cloud.google.com/free). Beyond that, you'll have to [pay](https://cloud.google.com/billing/docs/how-to/payment-methods).
