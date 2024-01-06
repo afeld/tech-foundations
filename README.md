@@ -1,6 +1,6 @@
 # Operations Management in IT course
 
-This repository uses [Terraform](https://www.terraform.io/) to set up Google Cloud for the Columbia University's [Operations Management in IT](https://doc.sis.columbia.edu/#subj/TMGT/PS5120-20241-001/) course. Using a list of student IDs (UNIs), it provisions [Projects](https://cloud.google.com/docs/overview#projects) for each, granting access to the instructor and Associates (a.k.a. teaching assistants).
+This repository uses [Terraform](https://www.terraform.io/) to set up Google Cloud for the Columbia University's [Operations Management in IT](https://doc.sis.columbia.edu/#subj/TMGT/PS5120-20241-001/) course. Using a list of student IDs ([UNIs](https://www.cuit.columbia.edu/my-uni)), it provisions [Projects](https://cloud.google.com/docs/overview#projects) for each, granting access to the instructor and Associates (a.k.a. teaching assistants) via [IAM](https://cloud.google.com/security/products/iam).
 
 Using credits through the [Google Cloud for Education](https://cloud.google.com/edu/faculty) program, students will:
 
@@ -28,7 +28,9 @@ Using credits through the [Google Cloud for Education](https://cloud.google.com/
 
 ## Student setup
 
-Do these one-time setup steps to ensure you don't have to pay for Google Cloud use for this class. A [Google Cloud Project](https://cloud.google.com/docs/overview#projects) has been created for you, which the instructors have access to for troubleshooting.
+Do these one-time setup steps to ensure you don't have to pay for Google Cloud use for this class. Credits are provided through the [Google Cloud for Education](https://cloud.google.com/edu/faculty) program.
+
+A [Project](https://cloud.google.com/docs/overview#projects) has been created for you, which the instructors have access to for troubleshooting.
 
 1. [Redeem the credits](https://cloud.google.com/billing/docs/how-to/edu-grants#redeem) - [video walkthrough](https://www.youtube.com/watch?v=2AnX7BX-qew)
    1. Instructor will send the coupon retrieval link
@@ -40,10 +42,16 @@ Do these one-time setup steps to ensure you don't have to pay for Google Cloud u
    1. Go to [the Billing Accounts page](https://console.cloud.google.com/billing?organizationId=819335046878)
    1. Click `Billing Account for Education`
    1. In the sidebar, click `Credits`
-   1. You should see an `Operations Management in IT` credit for $100
+   1. You should see an `Operations Management in IT` credit for $50
 1. Switch to your Project
    1. In the top navigation bar, on the left side, click the drop-down
    1. You should see a `Select a resource` modal pop up
    1. Click the `ALL` tab
    1. Click `Ops Mgmt in IT - <your UNI>`
 1. [Change the Billing Account](https://cloud.google.com/billing/docs/how-to/modify-project#how-to-change-ba) to `Billing Account for Education`
+
+### Use of Google Cloud outside this class
+
+If you're using Google Cloud for something outside of this class, we suggest [creating a separate Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) to keep things isolated. You are welcome to associate it with the `Billing Account for Education` to use those credits.
+
+We won't use the full $50 credit for this class, so you're welcome to take advantage of the remainder for other things. If you use it up, you'll start spending against your [Free Trial](https://cloud.google.com/free). Beyond that, you'll have to [pay](https://cloud.google.com/billing/docs/how-to/payment-methods).
