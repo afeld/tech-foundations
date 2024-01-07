@@ -6,6 +6,7 @@ resource "google_project_service" "default" {
     "bigquery.googleapis.com",
     "cloudaicompanion.googleapis.com",
     "compute.googleapis.com",
+    "sqladmin.googleapis.com",
   ])
   service = each.value
 }
