@@ -50,3 +50,16 @@ A [Project](https://cloud.google.com/docs/overview#projects) has been created fo
 If you're using Google Cloud for something outside of this class, we suggest [creating a separate Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) to keep things isolated. The `Billing Account for Education` is yours, so you're welcome to [associate it with other Projects](https://cloud.google.com/billing/docs/how-to/modify-project#how-to-change-ba) to use those credits.
 
 We won't use the full $50 credit for this class, so you're welcome to take advantage of the remainder for other things. If you use it up, you'll start spending against your [Free Trial](https://cloud.google.com/free). Beyond that, you'll have to [pay](https://cloud.google.com/billing/docs/how-to/payment-methods).
+
+## Troubleshooting students
+
+Instructors should have access to all student Projects. In the selector in the top of the nav bar, switch to their Project; the name ends with their UNI.
+
+### Audit Logs
+
+To help figure out what went wrong, it may be helpful to see what actions a student performed.
+
+1. [Go to Logs Explorer](https://console.cloud.google.com/logs/query;query=protoPayload.authenticationInfo.principalEmail!%3D%22alf2215@columbia.edu%22;duration=P7D)
+1. Run a query with `protoPayload.authenticationInfo.principalEmail!="alf2215@columbia.edu"` to filter out setup calls made from this repository
+
+[Info about Cloud Audit Logs](https://cloud.google.com/logging/docs/audit)
