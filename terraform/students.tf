@@ -20,3 +20,9 @@ module "test_student" {
   uni            = "teststudent"
   email_override = "aidan.feldman@gmail.com"
 }
+
+output "billing_accounts" {
+  value = {
+    for uni, student in module.students : uni => student.billing_account
+  }
+}
