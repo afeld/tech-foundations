@@ -1,6 +1,7 @@
 locals {
-  students = csvdecode(file("${path.module}/students.csv"))
-  unis     = toset([for student in local.students : student.Uni])
+  students    = csvdecode(file("${path.module}/students.csv"))
+  instructors = ["alf2215", "cv2464", "ph2698", "vv2358"]
+  unis        = setunion([for student in local.students : student.Uni], local.instructors)
 }
 
 module "students" {
