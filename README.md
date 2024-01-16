@@ -4,6 +4,7 @@ This repository uses [Terraform](https://www.terraform.io/) to set up Google Clo
 
 ## Instructor setup
 
+1. If the number of students+instructors is larger than 20, [request a Project Quota increase](https://support.google.com/code/contact/project_quota_increase)
 1. [Install Terraform](https://developer.hashicorp.com/terraform/install)
 1. Set up `gcloud`:
 
