@@ -20,7 +20,7 @@ This repository uses [Terraform](https://www.terraform.io/) to set up Google Clo
    1. Click `See Roster`
    1. Click `Download comma delimited roster with Excel extension.`
    1. Move to `terraform/students.csv`
-1. Run `terraform apply`
+1. Run `terraform apply -parallelism=100` (arbitrarily high number)
 
 ## Student setup
 
