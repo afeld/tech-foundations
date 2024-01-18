@@ -26,7 +26,7 @@ This repository uses [Terraform](https://www.terraform.io/) to set up Google Clo
 
 Do these one-time setup steps to ensure you don't have to pay for Google Cloud use for this class. Credits are provided through the [Google Cloud for Education](https://cloud.google.com/edu/faculty) program.
 
-A [Project](https://cloud.google.com/docs/overview#projects) has been created for you, which the instructors have access to for troubleshooting.
+A [Project](https://cloud.google.com/docs/overview#projects) has been created for you, which the instructors have access to for troubleshooting. You redeem the credits, which creates a Billing Account. You then have to associate that Billing Account with the existing Project.
 
 1. [Redeem the credits](https://cloud.google.com/billing/docs/how-to/edu-grants#redeem) - [video walkthrough](https://www.youtube.com/watch?v=2AnX7BX-qew)
    1. Instructor will send the coupon retrieval link
