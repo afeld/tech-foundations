@@ -28,11 +28,22 @@ Do these one-time setup steps to ensure you don't have to pay for Google Cloud u
 
 A [Project](https://cloud.google.com/docs/overview#projects) has been created for you, which the instructors have access to for troubleshooting. You redeem the credits, which creates a Billing Account. You then have to associate that Billing Account with the existing Project.
 
+1. Make sure you're only logged into your Columbia Google account for all these steps, no others. Suggested ways to do this:
+   - An incognito/private window. See instructions for:
+     - [Chrome](https://support.google.com/chrome/answer/95464)
+     - [Firefox](https://support.mozilla.org/en-US/kb/private-browsing-use-firefox-without-history#w_how-do-i-open-a-new-private-window)
+     - [Edge](https://support.microsoft.com/en-us/microsoft-edge/browse-inprivate-in-microsoft-edge-e6f47704-340c-7d4f-b00d-d0cf35aa1fcc)
+     - [Safari](https://support.apple.com/guide/safari/browse-privately-ibrw1069/mac)
+   - A browser you don't normally use
+   - A separate browser profile. See instructions for:
+     - [Chrome](https://support.google.com/chrome/a/answer/9025411)
+     - [Edge](https://support.microsoft.com/en-us/topic/sign-in-and-create-multiple-profiles-in-microsoft-edge-df94e622-2061-49ae-ad1d-6f0e43ce6435)
+     - [Firefox](https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles)
+     - [Safari](https://support.apple.com/en-us/105100)
 1. [Redeem the credits](https://cloud.google.com/billing/docs/how-to/edu-grants#redeem) - [video walkthrough](https://www.youtube.com/watch?v=2AnX7BX-qew)
    1. Instructor will send the coupon retrieval link
    1. Fill in the form
       - Use your UNI for your email, not an [alias](https://www.cuit.columbia.edu/email/email-aliases)
-   1. When you get to [the GCP Credit Application screen](https://console.cloud.google.com/education), **make sure you've [switched to your Columbia Google account](https://support.google.com/docs/answer/2405894)**
 1. [Dismiss the Free Trial banner — should not need a credit card](https://services.google.com/fh/files/helpcenter/cloud_edu_free_trial_warning.pdf)
 1. Confirm the credits were applied
    1. Go to [the Billing Accounts page](https://console.cloud.google.com/billing?organizationId=819335046878)
@@ -45,10 +56,6 @@ A [Project](https://cloud.google.com/docs/overview#projects) has been created fo
    1. Click the `ALL` tab
    1. Click `Ops Mgmt in IT - <your UNI>`
 1. [Change the Billing Account](https://cloud.google.com/billing/docs/how-to/modify-project#how-to-change-ba) to `Billing Account for Education`
-
-### Accidentally redeemed the credit with the wrong Google account
-
-If you missed the step above about switching to your Columbia Google account, the easiest fix is to follow [these steps](https://cloud.google.com/billing/docs/how-to/grant-access-to-billing#update-cloud-billing-permissions) and make your `<uni>@columbia.edu` user a `Billing Account Administrator` on the `Billing Account for Education`.
 
 ### Use of Google Cloud outside this class
 
