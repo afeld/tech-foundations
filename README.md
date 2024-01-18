@@ -32,7 +32,7 @@ A [Project](https://cloud.google.com/docs/overview#projects) has been created fo
    1. Instructor will send the coupon retrieval link
    1. Fill in the form
       - Use your UNI for your email, not an [alias](https://www.cuit.columbia.edu/email/email-aliases)
-   1. When you get to [the GCP Credit Application screen](https://console.cloud.google.com/education), make sure you've [switched to your Columbia Google account](https://support.google.com/docs/answer/2405894)
+   1. When you get to [the GCP Credit Application screen](https://console.cloud.google.com/education), **make sure you've [switched to your Columbia Google account](https://support.google.com/docs/answer/2405894)**
 1. [Dismiss the Free Trial banner — should not need a credit card](https://services.google.com/fh/files/helpcenter/cloud_edu_free_trial_warning.pdf)
 1. Confirm the credits were applied
    1. Go to [the Billing Accounts page](https://console.cloud.google.com/billing?organizationId=819335046878)
@@ -45,6 +45,10 @@ A [Project](https://cloud.google.com/docs/overview#projects) has been created fo
    1. Click the `ALL` tab
    1. Click `Ops Mgmt in IT - <your UNI>`
 1. [Change the Billing Account](https://cloud.google.com/billing/docs/how-to/modify-project#how-to-change-ba) to `Billing Account for Education`
+
+### Accidentally redeemed the credit with the wrong Google account
+
+If you missed the step above about switching to your Columbia Google account, the easiest fix is to follow [these steps](https://cloud.google.com/billing/docs/how-to/grant-access-to-billing#update-cloud-billing-permissions) and make your `<uni>@columbia.edu` user a `Billing Account Administrator` on the `Billing Account for Education`.
 
 ### Use of Google Cloud outside this class
 
