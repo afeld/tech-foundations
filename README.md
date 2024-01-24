@@ -2,7 +2,7 @@
 
 This repository uses [Terraform](https://www.terraform.io/) to set up Google Cloud for the Columbia University's [Operations Management in IT](https://doc.sis.columbia.edu/#subj/TMGT/PS5120-20241-001/) course. Using a list of student and instructor IDs ([UNIs](https://www.cuit.columbia.edu/my-uni)), it provisions [Projects](https://cloud.google.com/docs/overview#projects) for each, granting access to the instructor and Associates (a.k.a. teaching assistants) via [IAM](https://cloud.google.com/security/products/iam).
 
-## Instructor setup
+## Course setup
 
 This only needs to be done once per semester, by whichever instructor is managing Google Cloud.
 
