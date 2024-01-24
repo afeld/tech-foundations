@@ -4,6 +4,8 @@ This repository uses [Terraform](https://www.terraform.io/) to set up Google Clo
 
 ## Instructor setup
 
+This only needs to be done once per semester, by whichever instructor is managing Google Cloud.
+
 1. If the number of students+instructors is larger than 20, [request a Project Quota increase](https://support.google.com/code/contact/project_quota_increase)
 1. [Install Terraform](https://developer.hashicorp.com/terraform/install)
 1. Set up `gcloud`:
@@ -21,6 +23,10 @@ This repository uses [Terraform](https://www.terraform.io/) to set up Google Clo
    1. Click `Download comma delimited roster with Excel extension.`
    1. Move to `terraform/students.csv`
 1. Run `terraform apply -parallelism=400` (arbitrarily high number)
+
+As the course enrollment changes, re-run the last two steps.
+
+As students go through the setup (below), you can re-run the `apply` to get a report of who is missing billing.
 
 ## Student setup
 
