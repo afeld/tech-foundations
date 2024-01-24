@@ -23,11 +23,11 @@ module "test_student" {
 
 # reporting on billing accounts
 
-output "billing_accounts" {
-  value = {
-    for uni, student in module.students : uni => student.billing_account
-  }
-}
+# output "billing_accounts" {
+#   value = {
+#     for uni, student in module.students : uni => student.billing_account
+#   }
+# }
 
 locals {
   num_projects = length(module.students)
