@@ -23,5 +23,3 @@ provider "google" {
   user_project_override = true
   billing_project       = local.root_project
 }
-
-data "google_project" "root_project" {}

@@ -1,4 +1,4 @@
-variable "org_id" {
+variable "folder_id" {
   type = string
 }
 
