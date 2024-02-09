@@ -3,6 +3,7 @@ resource "google_project_service" "default" {
     "billingbudgets.googleapis.com",
     "cloudbilling.googleapis.com",
     "cloudresourcemanager.googleapis.com",
+    "compute.googleapis.com",
     "dns.googleapis.com",
     "serviceusage.googleapis.com"
   ])
