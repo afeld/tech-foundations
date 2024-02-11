@@ -8,7 +8,8 @@ resource "google_project_iam_member" "student" {
   member  = "user:${local.email}"
 }
 
-# creator (person running Terraform) automatically added as an Owner
+# creator (user running Terraform) automatically added as an Owner
+# https://cloud.google.com/resource-manager/docs/access-control-proj#resourcemanager.projectCreator
 
 resource "google_project_iam_member" "associates" {
   project = google_project.student.project_id
