@@ -4,10 +4,12 @@ locals {
   # some services require a billing account to be associated
   # https://support.google.com/googleapi/answer/6158867
   services_that_require_billing = [
+    "cloudbuild.googleapis.com",
     "compute.googleapis.com",
   ]
   services_to_enable = setunion([
     "analyticshub.googleapis.com",
+    "appengine.googleapis.com",
     "bigquery.googleapis.com",
     "cloudaicompanion.googleapis.com",
     "sourcerepo.googleapis.com",
