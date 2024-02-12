@@ -10,6 +10,7 @@ locals {
     "analyticshub.googleapis.com",
     "bigquery.googleapis.com",
     "cloudaicompanion.googleapis.com",
+    "sourcerepo.googleapis.com",
     "sqladmin.googleapis.com",
   ], local.has_billing_account ? local.services_that_require_billing : [])
 }
