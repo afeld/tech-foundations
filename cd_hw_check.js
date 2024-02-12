@@ -4,8 +4,10 @@ const { ServicesClient } = require("@google-cloud/appengine-admin");
 const { ProjectsClient } = require("@google-cloud/resource-manager");
 
 const appEngineClient = new ServicesClient();
+const projClient = new ProjectsClient();
 
 const getUni = (projectId) => {
+  // check that it matches the naming convention
   const match = projectId.match(/^columbia-ops-mgmt-(\w+)$/);
   if (match) {
     return match[1];
@@ -13,7 +15,7 @@ const getUni = (projectId) => {
   return null;
 };
 
-async function listVersions(projectId) {
+async function checkProject(projectId) {
   let appExists = false;
   try {
     await appEngineClient.listServices({
@@ -31,8 +33,6 @@ async function listVersions(projectId) {
   console.warn(`${uni} has App Engine application:\t${appExists}`);
 }
 
-const projClient = new ProjectsClient();
-
 async function quickstart() {
   const projects = projClient.searchProjectsAsync();
 
@@ -40,18 +40,11 @@ async function quickstart() {
     const projectId = project.projectId;
     const uni = getUni(projectId);
     if (!uni) {
+      // not a student Project
       continue;
     }
-
-    try {
-      await listVersions(projectId);
-    } catch (e) {
-      if (e.reason === "SERVICE_DISABLED") {
-        continue;
-      } else {
-        console.error(e);
-      }
-    }
+    // don't wait; allow to run in parallel
+    checkProject(projectId);
   }
 }
 quickstart();
