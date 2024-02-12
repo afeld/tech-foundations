@@ -1,0 +1,7 @@
+{
+  "name": "tech-management",
+  "private": true,
+  "dependencies": {
+    "@google-cloud/resource-manager": "^5.0.1"
+  }
+}
