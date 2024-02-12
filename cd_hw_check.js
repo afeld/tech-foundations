@@ -6,17 +6,27 @@ const { ProjectsClient } = require("@google-cloud/resource-manager");
 const appEngineClient = new ServicesClient();
 
 async function listVersions(projectId) {
-  const [versions] = await appEngineClient.listServices({
-    parent: `apps/${projectId}`,
-  });
-  console.info(versions);
+  let appExists = false;
+  try {
+    await appEngineClient.listServices({
+      parent: `apps/${projectId}`,
+    });
+    appExists = true;
+  } catch (e) {
+    // 5 is NOT_FOUND
+    // https://cloud.google.com/apis/design/errors#error_codes
+    if (e.code !== 5) {
+      throw e;
+    }
+  }
+  console.warn(`${projectId} has App Engine application:\t${appExists}`);
 }
 
 const projClient = new ProjectsClient();
 
 async function quickstart() {
   const projects = projClient.searchProjectsAsync();
-  console.log("Projects:");
+
   for await (const project of projects) {
     const projectId = project.projectId;
     const match = projectId.match(/^columbia-ops-mgmt-(\w+)$/);
