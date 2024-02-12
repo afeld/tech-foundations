@@ -5,6 +5,14 @@ const { ProjectsClient } = require("@google-cloud/resource-manager");
 
 const appEngineClient = new ServicesClient();
 
+const getUni = (projectId) => {
+  const match = projectId.match(/^columbia-ops-mgmt-(\w+)$/);
+  if (match) {
+    return match[1];
+  }
+  return null;
+};
+
 async function listVersions(projectId) {
   let appExists = false;
   try {
@@ -19,7 +27,8 @@ async function listVersions(projectId) {
       throw e;
     }
   }
-  console.warn(`${projectId} has App Engine application:\t${appExists}`);
+  const uni = getUni(projectId);
+  console.warn(`${uni} has App Engine application:\t${appExists}`);
 }
 
 const projClient = new ProjectsClient();
@@ -29,12 +38,10 @@ async function quickstart() {
 
   for await (const project of projects) {
     const projectId = project.projectId;
-    const match = projectId.match(/^columbia-ops-mgmt-(\w+)$/);
-    if (!match) {
+    const uni = getUni(projectId);
+    if (!uni) {
       continue;
     }
-    const uni = match[1];
-    // console.info(uni);
 
     try {
       await listVersions(projectId);
