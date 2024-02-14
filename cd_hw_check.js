@@ -1,21 +1,13 @@
-// https://cloud.google.com/nodejs/docs/reference/resource-manager/latest#using-the-client-library
 // https://cloud.google.com/nodejs/docs/reference/appengine-admin/latest#using-the-client-library
 const { ServicesClient } = require("@google-cloud/appengine-admin");
-const { ProjectsClient } = require("@google-cloud/resource-manager");
+const fs = require("fs");
+const { parse } = require("csv-parse");
 
 const appEngineClient = new ServicesClient();
-const projClient = new ProjectsClient();
 
-const getUni = (projectId) => {
-  // check that it matches the naming convention
-  const match = projectId.match(/^columbia-ops-mgmt-(\w+)$/);
-  if (match) {
-    return match[1];
-  }
-  return null;
-};
+async function checkProject(uni) {
+  const projectId = `columbia-ops-mgmt-${uni}`;
 
-async function checkProject(projectId) {
   let appExists = false;
   try {
     await appEngineClient.listServices({
@@ -29,22 +21,12 @@ async function checkProject(projectId) {
       throw e;
     }
   }
-  const uni = getUni(projectId);
   console.warn(`${uni} has App Engine application:\t${appExists}`);
 }
 
-async function quickstart() {
-  const projects = projClient.searchProjectsAsync();
-
-  for await (const project of projects) {
-    const projectId = project.projectId;
-    const uni = getUni(projectId);
-    if (!uni) {
-      // not a student Project
-      continue;
-    }
-    // don't wait; allow to run in parallel
-    checkProject(projectId);
-  }
-}
-quickstart();
+const checkProjects = () => {
+  fs.createReadStream("./terraform/students.csv")
+    .pipe(parse({ columns: true }))
+    .on("data", (row) => checkProject(row.Uni));
+};
+checkProjects();

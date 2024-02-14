@@ -3,6 +3,6 @@
   "private": true,
   "dependencies": {
     "@google-cloud/appengine-admin": "^3.0.1",
-    "@google-cloud/resource-manager": "^5.0.1"
+    "csv-parse": "^5.5.3"
   }
 }
