@@ -5,15 +5,12 @@ const { parse } = require("csv-parse");
 
 const appEngineClient = new ServicesClient();
 
-async function checkProject(uni) {
-  const projectId = `columbia-ops-mgmt-${uni}`;
-
-  let appExists = false;
+const hasAppEngine = async (projectId) => {
   try {
     await appEngineClient.listServices({
       parent: `apps/${projectId}`,
     });
-    appExists = true;
+    return true;
   } catch (e) {
     // 5 is NOT_FOUND
     // https://cloud.google.com/apis/design/errors#error_codes
@@ -21,8 +18,15 @@ async function checkProject(uni) {
       throw e;
     }
   }
-  console.warn(`${uni} has App Engine application:\t${appExists}`);
-}
+
+  return false;
+};
+
+const checkProject = async (uni) => {
+  const projectId = `columbia-ops-mgmt-${uni}`;
+  const appExists = await hasAppEngine(projectId);
+  console.log(`${uni} has App Engine application:\t${appExists}`);
+};
 
 const checkProjects = () => {
   fs.createReadStream("./terraform/students.csv")
