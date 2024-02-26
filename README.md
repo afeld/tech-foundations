@@ -74,3 +74,21 @@ To help figure out what went wrong, it may be helpful to see what actions a stud
 1. Run a query with `protoPayload.authenticationInfo.principalEmail!="alf2215@columbia.edu"` to filter out setup calls made from this repository
 
 [Info about Cloud Audit Logs](https://cloud.google.com/logging/docs/audit)
+
+## Continuous Deployment auto-grader
+
+For the [Continuous Deployment](https://courseworks2.columbia.edu/courses/198128/assignments/1179691) Assignment, we can check which things have been deployed by which student using a script.
+
+1. Follow the [course setup](#course-setup) instructions around the CSV of students.
+1. [Install Node.js](https://nodejs.org/en/download/current).
+1. Install dependencies.
+
+   ```bash
+   npm install
+   ```
+
+1. Run the script.
+
+   ```bash
+   node cd_hw_check.js
+   ```
