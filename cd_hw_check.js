@@ -28,9 +28,17 @@ const checkProject = async (uni) => {
   console.log(`${uni} has App Engine application:\t${appExists}`);
 };
 
-const checkProjects = () => {
-  fs.createReadStream("./terraform/students.csv")
-    .pipe(parse({ columns: true }))
-    .on("data", (row) => checkProject(row.Uni));
+const checkProjects = async () => {
+  const parser = fs
+    .createReadStream("./terraform/students.csv")
+    .pipe(parse({ columns: true }));
+
+  const promises = [];
+  for await (const row of parser) {
+    const checkPromise = checkProject(row.Uni);
+    promises.push(checkPromise);
+  }
+  await Promise.all(promises);
+  console.log("done");
 };
 checkProjects();
