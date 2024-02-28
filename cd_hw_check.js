@@ -74,9 +74,12 @@ const hasCloudBuildTrigger = async (projectId) => {
 
 const checkProject = async (uni) => {
   const projectId = `columbia-ops-mgmt-${uni}`;
-  const appExists = await hasAppEngine(projectId);
-  const buildTrigger = await hasCloudBuildTrigger(projectId);
-  return { uni, app_engine: appExists, build_trigger: buildTrigger };
+  // check in parallel
+  const results = await Promise.all([
+    hasAppEngine(projectId),
+    hasCloudBuildTrigger(projectId),
+  ]);
+  return { uni, app_engine: results[0], build_trigger: results[1] };
 };
 
 const checkProjects = async () => {
