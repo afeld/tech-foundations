@@ -26,7 +26,6 @@ const hasAppEngine = async (projectId) => {
 const checkProject = async (uni) => {
   const projectId = `columbia-ops-mgmt-${uni}`;
   const appExists = await hasAppEngine(projectId);
-  console.log(`${uni} has App Engine application:\t${appExists}`);
   return { uni, app_engine: appExists };
 };
 
@@ -42,7 +41,8 @@ const checkProjects = async () => {
       boolean: (value) => (value ? "Y" : "N"),
     },
   });
-  const writableStream = fs.createWriteStream("cd_results.csv");
+  const outFile = "cd_results.csv";
+  const writableStream = fs.createWriteStream(outFile);
   stringifier.pipe(writableStream);
 
   const promises = [];
@@ -53,6 +53,6 @@ const checkProjects = async () => {
     checkPromise.then((result) => stringifier.write(result));
   }
   await Promise.all(promises);
-  console.log("done");
+  console.log(`Done, see ${outFile} for results.`);
 };
 checkProjects();
