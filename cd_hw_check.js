@@ -72,14 +72,42 @@ const hasCloudBuildTrigger = async (projectId) => {
   return false;
 };
 
+const hasCloudBuilds = async (projectId) => {
+  try {
+    // https://cloud.google.com/nodejs/docs/reference/cloudbuild/latest/cloudbuild/v1.cloudbuildclient#_google_cloud_cloudbuild_v1_CloudBuildClient_listBuildsAsync_member_1_
+    const builds = cloudBuildClient.listBuildsAsync({ projectId });
+    for await (const build of builds) {
+      // console.log(build);
+      if (build.status === "SUCCESS") {
+        return true;
+      }
+    }
+  } catch (e) {
+    // "Cloud Build has not been used in project [number] before or it is disabled."
+    if (e.code !== 7) {
+      throw e;
+    }
+  }
+
+  return false;
+};
+
 const checkProject = async (uni) => {
   const projectId = `columbia-ops-mgmt-${uni}`;
+
   // check in parallel
   const results = await Promise.all([
     hasAppEngine(projectId),
     hasCloudBuildTrigger(projectId),
+    hasCloudBuilds(projectId),
   ]);
-  return { uni, app_engine: results[0], build_trigger: results[1] };
+
+  return {
+    uni,
+    app_engine: results[0],
+    build_trigger: results[1],
+    build: results[2],
+  };
 };
 
 const checkProjects = async () => {
@@ -88,6 +116,7 @@ const checkProjects = async () => {
     "uni",
     "app_engine",
     "build_trigger",
+    "build",
   ]);
 
   // do them all in parallel
