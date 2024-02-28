@@ -4,6 +4,9 @@ import fs from "fs";
 import { parse } from "csv-parse";
 import { stringify } from "csv-stringify";
 
+const INPUT_FILE = "./terraform/students.csv";
+const OUTPUT_FILE = "cd_results.csv";
+
 const appEngineClient = new ServicesClient();
 
 const hasAppEngine = async (projectId) => {
@@ -30,9 +33,7 @@ const checkProject = async (uni) => {
 };
 
 const checkProjects = async () => {
-  const parser = fs
-    .createReadStream("./terraform/students.csv")
-    .pipe(parse({ columns: true }));
+  const parser = fs.createReadStream(INPUT_FILE).pipe(parse({ columns: true }));
 
   const stringifier = stringify({
     header: true,
@@ -41,10 +42,10 @@ const checkProjects = async () => {
       boolean: (value) => (value ? "Y" : "N"),
     },
   });
-  const outFile = "cd_results.csv";
-  const writableStream = fs.createWriteStream(outFile);
+  const writableStream = fs.createWriteStream(OUTPUT_FILE);
   stringifier.pipe(writableStream);
 
+  // do them all in parallel
   const promises = [];
   for await (const row of parser) {
     const checkPromise = checkProject(row.Uni);
@@ -52,7 +53,8 @@ const checkProjects = async () => {
 
     checkPromise.then((result) => stringifier.write(result));
   }
+  // wait for them all to fininsh
   await Promise.all(promises);
-  console.log(`Done, see ${outFile} for results.`);
+  console.log(`Done, see ${OUTPUT_FILE} for results.`);
 };
 checkProjects();
