@@ -42,19 +42,21 @@ const hasAppEngine = async (projectId) => {
   return false;
 };
 
+const isValidTrigger = (trigger) => {
+  // https://cloud.google.com/nodejs/docs/reference/cloudbuild/latest/cloudbuild/protos.google.devtools.cloudbuild.v1.ibuildtrigger
+  if (trigger.buildTemplate == "filename" && trigger.triggerTemplate.repoName) {
+    return true;
+  }
+  return false;
+};
+
 const hasCloudBuildTrigger = async (projectId) => {
   try {
     // https://cloud.google.com/nodejs/docs/reference/cloudbuild/latest/cloudbuild/v1.cloudbuildclient#_google_cloud_cloudbuild_v1_CloudBuildClient_listBuildTriggersAsync_member_1_
     const triggers = cloudBuildClient.listBuildTriggersAsync({ projectId });
     for await (const trigger of triggers) {
       // console.log(trigger);
-      // https://cloud.google.com/nodejs/docs/reference/cloudbuild/latest/cloudbuild/protos.google.devtools.cloudbuild.v1.ibuildtrigger
-      if (
-        trigger.buildTemplate == "filename" &&
-        trigger.triggerTemplate.repoName
-      ) {
-        return true;
-      }
+      return isValidTrigger(trigger);
     }
   } catch (e) {
     // "Cloud Build has not been used in project [number] before or it is disabled."
