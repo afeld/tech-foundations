@@ -4,6 +4,7 @@
   "type": "module",
   "dependencies": {
     "@google-cloud/appengine-admin": "^3.0.1",
-    "csv-parse": "^5.5.3"
+    "csv-parse": "^5.5.3",
+    "csv-stringify": "^6.4.6"
   }
 }

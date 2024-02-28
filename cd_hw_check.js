@@ -2,6 +2,7 @@
 import { ServicesClient } from "@google-cloud/appengine-admin";
 import fs from "fs";
 import { parse } from "csv-parse";
+import { stringify } from "csv-stringify";
 
 const appEngineClient = new ServicesClient();
 
@@ -26,6 +27,7 @@ const checkProject = async (uni) => {
   const projectId = `columbia-ops-mgmt-${uni}`;
   const appExists = await hasAppEngine(projectId);
   console.log(`${uni} has App Engine application:\t${appExists}`);
+  return { uni, app_engine: appExists };
 };
 
 const checkProjects = async () => {
@@ -33,10 +35,22 @@ const checkProjects = async () => {
     .createReadStream("./terraform/students.csv")
     .pipe(parse({ columns: true }));
 
+  const stringifier = stringify({
+    header: true,
+    columns: ["uni", "app_engine"],
+    cast: {
+      boolean: (value) => (value ? "Y" : "N"),
+    },
+  });
+  const writableStream = fs.createWriteStream("cd_results.csv");
+  stringifier.pipe(writableStream);
+
   const promises = [];
   for await (const row of parser) {
     const checkPromise = checkProject(row.Uni);
     promises.push(checkPromise);
+
+    checkPromise.then((result) => stringifier.write(result));
   }
   await Promise.all(promises);
   console.log("done");
