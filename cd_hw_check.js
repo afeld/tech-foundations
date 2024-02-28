@@ -1,7 +1,7 @@
 // https://cloud.google.com/nodejs/docs/reference/appengine-admin/latest#using-the-client-library
-const { ServicesClient } = require("@google-cloud/appengine-admin");
-const fs = require("fs");
-const { parse } = require("csv-parse");
+import { ServicesClient } from "@google-cloud/appengine-admin";
+import fs from "fs";
+import { parse } from "csv-parse";
 
 const appEngineClient = new ServicesClient();
 
