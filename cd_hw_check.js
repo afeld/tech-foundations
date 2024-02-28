@@ -9,6 +9,20 @@ const OUTPUT_FILE = "cd_results.csv";
 
 const appEngineClient = new ServicesClient();
 
+const createCSVWriter = (filename, columns) => {
+  const stringifier = stringify({
+    header: true,
+    columns: columns,
+    cast: {
+      boolean: (value) => (value ? "Y" : "N"),
+    },
+  });
+  const writableStream = fs.createWriteStream(filename);
+  stringifier.pipe(writableStream);
+
+  return stringifier;
+};
+
 const hasAppEngine = async (projectId) => {
   try {
     await appEngineClient.listServices({
@@ -34,16 +48,7 @@ const checkProject = async (uni) => {
 
 const checkProjects = async () => {
   const parser = fs.createReadStream(INPUT_FILE).pipe(parse({ columns: true }));
-
-  const stringifier = stringify({
-    header: true,
-    columns: ["uni", "app_engine"],
-    cast: {
-      boolean: (value) => (value ? "Y" : "N"),
-    },
-  });
-  const writableStream = fs.createWriteStream(OUTPUT_FILE);
-  stringifier.pipe(writableStream);
+  const stringifier = createCSVWriter(OUTPUT_FILE, ["uni", "app_engine"]);
 
   // do them all in parallel
   const promises = [];
