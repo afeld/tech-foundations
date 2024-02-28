@@ -53,10 +53,10 @@ const checkProjects = async () => {
   // do them all in parallel
   const promises = [];
   for await (const row of parser) {
-    const checkPromise = checkProject(row.Uni);
-    promises.push(checkPromise);
-
-    checkPromise.then((result) => stringifier.write(result));
+    const promise = checkProject(row.Uni).then((result) =>
+      stringifier.write(result)
+    );
+    promises.push(promise);
   }
   // wait for them all to fininsh
   await Promise.all(promises);
