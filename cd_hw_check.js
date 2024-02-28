@@ -1,5 +1,6 @@
 // https://cloud.google.com/nodejs/docs/reference/appengine-admin/latest#using-the-client-library
 import { ServicesClient } from "@google-cloud/appengine-admin";
+import { CloudBuildClient } from "@google-cloud/cloudbuild";
 import fs from "fs";
 import { parse } from "csv-parse";
 import { stringify } from "csv-stringify";
@@ -8,6 +9,7 @@ const INPUT_FILE = "./terraform/students.csv";
 const OUTPUT_FILE = "cd_results.csv";
 
 const appEngineClient = new ServicesClient();
+const cloudBuildClient = new CloudBuildClient();
 
 const createCSVWriter = (filename, columns) => {
   const stringifier = stringify({
@@ -40,15 +42,44 @@ const hasAppEngine = async (projectId) => {
   return false;
 };
 
+const hasCloudBuildTrigger = async (projectId) => {
+  try {
+    // https://cloud.google.com/nodejs/docs/reference/cloudbuild/latest/cloudbuild/v1.cloudbuildclient#_google_cloud_cloudbuild_v1_CloudBuildClient_listBuildTriggersAsync_member_1_
+    const triggers = cloudBuildClient.listBuildTriggersAsync({ projectId });
+    for await (const trigger of triggers) {
+      // console.log(trigger);
+      // https://cloud.google.com/nodejs/docs/reference/cloudbuild/latest/cloudbuild/protos.google.devtools.cloudbuild.v1.ibuildtrigger
+      if (
+        trigger.buildTemplate == "filename" &&
+        trigger.triggerTemplate.repoName
+      ) {
+        return true;
+      }
+    }
+  } catch (e) {
+    // "Cloud Build has not been used in project [number] before or it is disabled."
+    if (e.code !== 7) {
+      throw e;
+    }
+  }
+
+  return false;
+};
+
 const checkProject = async (uni) => {
   const projectId = `columbia-ops-mgmt-${uni}`;
   const appExists = await hasAppEngine(projectId);
-  return { uni, app_engine: appExists };
+  const buildTrigger = await hasCloudBuildTrigger(projectId);
+  return { uni, app_engine: appExists, build_trigger: buildTrigger };
 };
 
 const checkProjects = async () => {
   const parser = fs.createReadStream(INPUT_FILE).pipe(parse({ columns: true }));
-  const stringifier = createCSVWriter(OUTPUT_FILE, ["uni", "app_engine"]);
+  const stringifier = createCSVWriter(OUTPUT_FILE, [
+    "uni",
+    "app_engine",
+    "build_trigger",
+  ]);
 
   // do them all in parallel
   const promises = [];
