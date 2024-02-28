@@ -44,7 +44,11 @@ const hasAppEngine = async (projectId) => {
 
 const isValidTrigger = (trigger) => {
   // https://cloud.google.com/nodejs/docs/reference/cloudbuild/latest/cloudbuild/protos.google.devtools.cloudbuild.v1.ibuildtrigger
-  if (trigger.buildTemplate == "filename" && trigger.triggerTemplate.repoName) {
+  if (
+    trigger.buildTemplate == "filename" &&
+    trigger.triggerTemplate &&
+    trigger.triggerTemplate.repoName
+  ) {
     return true;
   }
   return false;
@@ -91,7 +95,7 @@ const checkProjects = async () => {
     );
     promises.push(promise);
   }
-  // wait for them all to fininsh
+  // wait for them all to finish
   await Promise.all(promises);
   console.log(`Done, see ${OUTPUT_FILE} for results.`);
 };
