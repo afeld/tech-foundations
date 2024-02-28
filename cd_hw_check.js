@@ -1,7 +1,9 @@
 // https://cloud.google.com/nodejs/docs/reference/appengine-admin/latest#using-the-client-library
 import { ServicesClient } from "@google-cloud/appengine-admin";
 import { CloudBuildClient } from "@google-cloud/cloudbuild";
+import { exec } from "child_process";
 import fs from "fs";
+import { promisify } from "util";
 import { parse } from "csv-parse";
 import { stringify } from "csv-stringify";
 
@@ -10,6 +12,8 @@ const OUTPUT_FILE = "cd_results.csv";
 
 const appEngineClient = new ServicesClient();
 const cloudBuildClient = new CloudBuildClient();
+
+const execP = promisify(exec);
 
 const createCSVWriter = (filename, columns) => {
   const stringifier = stringify({
@@ -87,23 +91,37 @@ const cloudBuilds = async (projectId) => {
   return [];
 };
 
+const hasRepo = async (projectId) => {
+  const { stdout } = await execP(
+    `gcloud source repos list --project=${projectId} --format=json`
+  );
+  const repos = JSON.parse(stdout);
+
+  if (repos.length > 0) {
+    return true;
+  }
+  return false;
+};
+
 const checkProject = async (uni) => {
   const projectId = `columbia-ops-mgmt-${uni}`;
 
   // check in parallel
   const results = await Promise.all([
     hasAppEngine(projectId),
+    hasRepo(projectId),
     hasCloudBuildTrigger(projectId),
     cloudBuilds(projectId),
   ]);
 
-  const builds = results[2];
+  const builds = results[3];
   const successfulBuild = builds.some((build) => build.status === "SUCCESS");
 
   return {
     uni,
     app_engine: results[0],
-    build_trigger: results[1],
+    repo: results[1],
+    build_trigger: results[2],
     build: builds.length > 0,
     build_success: successfulBuild,
   };

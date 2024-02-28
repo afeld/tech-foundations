@@ -8,6 +8,7 @@ This only needs to be done once per semester, by whichever instructor is managin
 
 1. If the number of students+instructors is larger than 20, [request a Project Quota increase](https://support.google.com/code/contact/project_quota_increase)
 1. [Install Terraform](https://developer.hashicorp.com/terraform/install)
+1. [Install `gcloud`](https://cloud.google.com/sdk/docs/install)
 1. Set up `gcloud`:
 
    ```sh
@@ -79,7 +80,7 @@ To help figure out what went wrong, it may be helpful to see what actions a stud
 
 For the [Continuous Deployment](https://courseworks2.columbia.edu/courses/198128/assignments/1179691) Assignment, we can check which things have been deployed by which student using a script.
 
-1. Follow the [course setup](#course-setup) instructions around the CSV of students.
+1. Follow the [course setup](#course-setup) instructions around `gcloud` and the CSV of students.
 1. [Install Node.js](https://nodejs.org/en/download/current).
 1. Install dependencies.
 
