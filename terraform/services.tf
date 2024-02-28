@@ -1,5 +1,9 @@
 resource "google_project_service" "default" {
   for_each = toset([
+    # needed to access in child Projects
+    "appengine.googleapis.com",
+    "cloudbuild.googleapis.com",
+
     "billingbudgets.googleapis.com",
     "cloudbilling.googleapis.com",
     "cloudresourcemanager.googleapis.com",
