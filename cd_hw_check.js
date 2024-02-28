@@ -62,4 +62,9 @@ const checkProjects = async () => {
   await Promise.all(promises);
   console.log(`Done, see ${OUTPUT_FILE} for results.`);
 };
-checkProjects();
+
+if (process.argv.length == 3) {
+  checkProject(process.argv[2]).then((result) => console.log(result));
+} else {
+  checkProjects();
+}

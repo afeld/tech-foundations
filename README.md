@@ -92,3 +92,9 @@ For the [Continuous Deployment](https://courseworks2.columbia.edu/courses/198128
    ```bash
    node cd_hw_check.js
    ```
+
+You can check a particular student with
+
+```sh
+node cd_hw_check.js <uni>
+```
