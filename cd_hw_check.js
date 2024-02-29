@@ -134,6 +134,7 @@ const checkProjects = async () => {
     "app_engine",
     "build_trigger",
     "build",
+    "build_success",
   ]);
 
   // do them all in parallel
