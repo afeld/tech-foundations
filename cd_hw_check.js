@@ -6,6 +6,7 @@ import fs from "fs";
 import { promisify } from "util";
 import { parse } from "csv-parse";
 import { stringify } from "csv-stringify";
+import fetch from "node-fetch";
 
 const INPUT_FILE = "./terraform/students.csv";
 const OUTPUT_FILE = "cd_results.csv";
@@ -44,6 +45,18 @@ const hasAppEngine = async (projectId) => {
   }
 
   return false;
+};
+
+const appEngineURL = (projectId) => {
+  // assume it's the default service for that Project
+  return `https://${projectId}.appspot.com`;
+};
+
+const appEngineStatus = async (projectId) => {
+  const url = appEngineURL(projectId);
+  // we only really need a HEAD request, but that's not allowed by default
+  const response = await fetch(url);
+  return response.ok;
 };
 
 const isValidTrigger = (trigger) => {
@@ -109,19 +122,21 @@ const checkProject = async (uni) => {
   // check in parallel
   const results = await Promise.all([
     hasAppEngine(projectId),
+    appEngineStatus(projectId),
     hasRepo(projectId),
     hasCloudBuildTrigger(projectId),
     cloudBuilds(projectId),
   ]);
 
-  const builds = results[3];
+  const builds = results[4];
   const successfulBuild = builds.some((build) => build.status === "SUCCESS");
 
   return {
     uni,
     app_engine: results[0],
-    repo: results[1],
-    build_trigger: results[2],
+    app_engine_200: results[1],
+    repo: results[2],
+    build_trigger: results[3],
     build: builds.length > 0,
     build_success: successfulBuild,
   };
@@ -132,6 +147,7 @@ const checkProjects = async () => {
   const stringifier = createCSVWriter(OUTPUT_FILE, [
     "uni",
     "app_engine",
+    "app_engine_200",
     "build_trigger",
     "build",
     "build_success",
