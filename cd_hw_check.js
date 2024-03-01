@@ -113,6 +113,8 @@ const cloudBuilds = async (projectId) => {
 };
 
 const hasRepo = async (projectId) => {
+  // there isn't a Node.js client for Source Repositories, so go through the CLI
+  // https://cloud.google.com/nodejs/docs/reference
   const { stdout } = await execP(
     `gcloud source repos list --project=${projectId} --format=json`
   );
@@ -156,7 +158,7 @@ const checkProject = async (uni) => {
 
 const checkProjects = async () => {
   const parser = fs.createReadStream(INPUT_FILE).pipe(parse({ columns: true }));
-  const stringifier = createCSVWriter(OUTPUT_FILE, [
+  const csvWriter = createCSVWriter(OUTPUT_FILE, [
     "uni",
     "app_engine",
     "app_engine_200",
@@ -169,7 +171,7 @@ const checkProjects = async () => {
   const promises = [];
   for await (const row of parser) {
     const promise = checkProject(row.Uni).then((result) =>
-      stringifier.write(result)
+      csvWriter.write(result)
     );
     promises.push(promise);
   }
@@ -179,6 +181,7 @@ const checkProjects = async () => {
 };
 
 if (process.argv.length == 3) {
+  // UNI specified
   const uni = process.argv[2];
   checkProject(uni).then(console.log);
 } else {
