@@ -75,9 +75,11 @@ const hasCloudBuildTrigger = async (projectId) => {
   try {
     // https://cloud.google.com/nodejs/docs/reference/cloudbuild/latest/cloudbuild/v1.cloudbuildclient#_google_cloud_cloudbuild_v1_CloudBuildClient_listBuildTriggersAsync_member_1_
     const triggers = cloudBuildClient.listBuildTriggersAsync({ projectId });
+    // check if any valid
     for await (const trigger of triggers) {
-      // console.log(trigger);
-      return isValidTrigger(trigger);
+      if (isValidTrigger(trigger)) {
+        return true;
+      }
     }
   } catch (e) {
     // "Cloud Build has not been used in project [number] before or it is disabled."
@@ -92,7 +94,10 @@ const hasCloudBuildTrigger = async (projectId) => {
 const cloudBuilds = async (projectId) => {
   try {
     // https://cloud.google.com/nodejs/docs/reference/cloudbuild/latest/cloudbuild/v1.cloudbuildclient#_google_cloud_cloudbuild_v1_CloudBuildClient_listBuilds_member_1_
-    const response = await cloudBuildClient.listBuilds({ projectId });
+    const response = await cloudBuildClient.listBuilds({
+      projectId,
+      maxResults: 10,
+    });
     return response[0];
   } catch (e) {
     // "Cloud Build has not been used in project [number] before or it is disabled."
