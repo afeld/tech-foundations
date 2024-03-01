@@ -7,9 +7,12 @@ import { promisify } from "util";
 import { parse } from "csv-parse";
 import { stringify } from "csv-stringify";
 import fetch from "node-fetch";
+import { DateTime } from "luxon";
 
 const INPUT_FILE = "./terraform/students.csv";
-const OUTPUT_FILE = "cd_results.csv";
+// write one per day for checking late work
+const date = DateTime.local().toISODate();
+const OUTPUT_FILE = `cd_results_${date}.csv`;
 
 const appEngineClient = new ServicesClient();
 const cloudBuildClient = new CloudBuildClient();
