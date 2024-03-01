@@ -167,7 +167,8 @@ const checkProjects = async () => {
 };
 
 if (process.argv.length == 3) {
-  checkProject(process.argv[2]).then((result) => console.log(result));
+  const uni = process.argv[2];
+  checkProject(uni).then(console.log);
 } else {
   checkProjects();
 }
