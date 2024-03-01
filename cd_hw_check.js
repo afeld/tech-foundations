@@ -124,6 +124,10 @@ const hasRepo = async (projectId) => {
   return false;
 };
 
+// https://cloud.google.com/nodejs/docs/reference/cloudbuild/latest/cloudbuild/protos.google.devtools.cloudbuild.v1.ibuild
+const isValidBuild = (build) =>
+  build.status === "SUCCESS" && build.source.source == "repoSource";
+
 const checkProject = async (uni) => {
   const projectId = `columbia-ops-mgmt-${uni}`;
 
@@ -137,7 +141,7 @@ const checkProject = async (uni) => {
   ]);
 
   const builds = results[4];
-  const successfulBuild = builds.some((build) => build.status === "SUCCESS");
+  const successfulBuild = builds.some(isValidBuild);
 
   return {
     uni,
