@@ -23,3 +23,7 @@ provider "google" {
   user_project_override = true
   billing_project       = local.root_project
 }
+
+provider "google-beta" {
+  user_project_override = true
+}

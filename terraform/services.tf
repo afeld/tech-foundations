@@ -9,6 +9,7 @@ resource "google_project_service" "default" {
     "cloudresourcemanager.googleapis.com",
     "compute.googleapis.com",
     "dns.googleapis.com",
+    "firebase.googleapis.com",
     "serviceusage.googleapis.com"
   ])
   service = each.value
