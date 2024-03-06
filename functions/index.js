@@ -27,10 +27,13 @@ export const addmessage = onRequest(async (req, res) => {
     // go through each check and if it's not already been detected, update the timestamp
     for (const [key, value] of Object.entries(current)) {
       if (existing[key]) {
+        // already detected
         continue;
       } else if (value === true) {
+        // initial detection
         updates[key] = now;
       }
+      // else not detected
     }
 
     logger.log(updates);
