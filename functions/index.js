@@ -15,15 +15,32 @@ const db = getFirestore();
 export const addmessage = onRequest(async (req, res) => {
   const collection = db.collection("continuous_deployment_checks");
 
+  const now = Timestamp.now();
   const students = await collection.get();
   students.forEach(async (student) => {
     const uni = student.id;
-    const data = await checkProject(uni);
+    const existing = student.data();
+    const current = await checkProject(uni);
 
+    const updates = {};
+
+    // go through each check and if it's not already been detected, update the timestamp
+    for (const [key, value] of Object.entries(current)) {
+      if (existing[key]) {
+        continue;
+      } else if (value === true) {
+        updates[key] = now;
+      }
+    }
+
+    logger.log(updates);
+
+    if (Object.keys(updates).length === 0) {
+      // nothing to update
+      return;
+    }
     // https://stackoverflow.com/a/55734557
-    student.ref.set(data);
-
-    logger.log(student.id, "=>", student.data());
+    student.ref.update(updates);
   });
 
   res.json({ result: "Kicked off checks" });
