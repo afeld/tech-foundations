@@ -13,15 +13,20 @@ initializeApp();
 const db = getFirestore();
 
 export const addmessage = onRequest(async (req, res) => {
-  const uni = "alf2215";
-  const data = await checkProject(uni);
+  const collection = db.collection("continuous_deployment_checks");
 
-  const writeResult = await db
-    .collection("continuous_deployment_checks")
-    .doc(uni)
-    .set(data);
-  // Send back a message that we've successfully written the message
-  res.json({ result: `Message with ID: ${writeResult.id} added.` });
+  const students = await collection.get();
+  students.forEach(async (student) => {
+    const uni = student.id;
+    const data = await checkProject(uni);
+
+    // https://stackoverflow.com/a/55734557
+    student.ref.set(data);
+
+    logger.log(student.id, "=>", student.data());
+  });
+
+  res.json({ result: "Kicked off checks" });
 });
 
 // https://cloud.google.com/appengine/docs/flexible/scheduling-jobs-with-cron-yaml#formatting_the_schedule
