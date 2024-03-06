@@ -9,7 +9,7 @@ import { stringify } from "csv-stringify";
 import fetch from "node-fetch";
 import { DateTime } from "luxon";
 
-const INPUT_FILE = "./terraform/students.csv";
+const INPUT_FILE = "../terraform/students.csv";
 // write one per day for checking late work
 const date = DateTime.local().toISODate();
 const OUTPUT_FILE = `cd_results_${date}.csv`;
@@ -130,7 +130,7 @@ const hasRepo = async (projectId) => {
 const isValidBuild = (build) =>
   build.status === "SUCCESS" && build.source.source == "repoSource";
 
-const checkProject = async (uni) => {
+export const checkProject = async (uni) => {
   const projectId = `columbia-ops-mgmt-${uni}`;
 
   // check in parallel
@@ -180,10 +180,12 @@ const checkProjects = async () => {
   console.log(`Done, see ${OUTPUT_FILE} for results.`);
 };
 
-if (process.argv.length == 3) {
-  // UNI specified
-  const uni = process.argv[2];
-  checkProject(uni).then(console.log);
-} else {
-  checkProjects();
-}
+// if (require.main === module) {
+//   if (process.argv.length == 3) {
+//     // UNI specified
+//     const uni = process.argv[2];
+//     checkProject(uni).then(console.log);
+//   } else {
+//     checkProjects();
+//   }
+// }

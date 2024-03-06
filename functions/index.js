@@ -6,20 +6,15 @@ import { onSchedule } from "firebase-functions/v2/scheduler";
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore, Timestamp } from "firebase-admin/firestore";
 
+import { checkProject } from "./cd_hw_check.js";
+
 initializeApp();
 
 const db = getFirestore();
 
 export const addmessage = onRequest(async (req, res) => {
   const uni = "alf2215";
-  const data = {
-    app_engine: null,
-    app_engine_200: new Date(),
-    repo: null,
-    build_trigger: null,
-    build: null,
-    build_success: null,
-  };
+  const data = await checkProject(uni);
 
   const writeResult = await db
     .collection("continuous_deployment_checks")
