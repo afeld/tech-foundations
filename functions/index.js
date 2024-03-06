@@ -1,6 +1,6 @@
-// The Cloud Functions for Firebase SDK to create Cloud Functions and triggers.
 const { logger } = require("firebase-functions");
 const { onRequest } = require("firebase-functions/v2/https");
+const { onSchedule } = require("firebase-functions/v2/scheduler");
 
 // The Firebase Admin SDK to access Firestore.
 const { initializeApp } = require("firebase-admin/app");
@@ -19,4 +19,11 @@ exports.addmessage = onRequest(async (req, res) => {
     .add({ original: original });
   // Send back a message that we've successfully written the message
   res.json({ result: `Message with ID: ${writeResult.id} added.` });
+});
+
+// https://cloud.google.com/appengine/docs/flexible/scheduling-jobs-with-cron-yaml#formatting_the_schedule
+exports.scheduled = onSchedule("every 1 minutes", async (event) => {
+  await getFirestore().collection("messages").add({ text: "written" });
+
+  logger.log("User cleanup finished");
 });
