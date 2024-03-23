@@ -4,8 +4,18 @@ import { parse } from "csv-parse";
 import { DateTime } from "luxon";
 import { createCSVWriter } from "./helpers.js";
 
+const COLUMNS = [
+  "uni",
+  "app_engine",
+  "app_engine_200",
+  "build_trigger",
+  "build",
+  "build_success",
+];
+
 const OUTPUT_FILE = "results.csv";
 
+const checks = COLUMNS.filter((key) => key !== "uni");
 const files = await readdir("./");
 files.sort();
 
@@ -25,21 +35,17 @@ const getResultDate = (file) => {
 const students = {};
 
 for (const file of files) {
-  console.log("Processing file:", file);
-
   const resultDate = getResultDate(file);
   if (!resultDate) {
     // not a result file
     continue;
   }
+  console.log("Processing file:", file);
 
   const parser = fs.createReadStream(file).pipe(parse({ columns: true }));
   for await (const row of parser) {
     // initialize
     students[row.uni] = students[row.uni] || {};
-
-    const checks = Object.keys(row).filter((key) => key !== "uni");
-    console.log(checks);
 
     for (const check of checks) {
       const existingDate = students[row.uni][check];
@@ -58,16 +64,7 @@ for (const file of files) {
   }
 }
 
-console.log(students);
-
-const csvWriter = createCSVWriter(OUTPUT_FILE, [
-  "uni",
-  "app_engine",
-  "app_engine_200",
-  "build_trigger",
-  "build",
-  "build_success",
-]);
+const csvWriter = createCSVWriter(OUTPUT_FILE, COLUMNS);
 
 for (const [uni, checks] of Object.entries(students)) {
   csvWriter.write({
