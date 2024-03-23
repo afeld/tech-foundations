@@ -32,6 +32,10 @@ const getResultDate = (file) => {
   });
 };
 
+const alreadyCompleted = (uni, check) => {
+  return !!students[uni][check];
+};
+
 const students = {};
 
 for (const file of files) {
@@ -44,21 +48,21 @@ for (const file of files) {
 
   const parser = fs.createReadStream(file).pipe(parse({ columns: true }));
   for await (const row of parser) {
+    const uni = row.uni;
     // initialize
-    students[row.uni] = students[row.uni] || {};
+    students[uni] = students[uni] || {};
 
     for (const check of checks) {
-      const existingDate = students[row.uni][check];
-      if (!existingDate) {
-        // not previously completed
+      if (alreadyCompleted(uni, check)) {
+        continue;
+      }
 
-        if (row[check] === "Y") {
-          // completed on this day
-          students[row.uni][check] = resultDate.toISODate();
-        } else {
-          // still not completed
-          students[row.uni][check] = null;
-        }
+      if (row[check] === "Y") {
+        // completed on this day
+        students[uni][check] = resultDate.toISODate();
+      } else {
+        // still not completed
+        students[uni][check] = null;
       }
     }
   }
