@@ -2,6 +2,9 @@ import fs from "node:fs";
 import { readdir } from "node:fs/promises";
 import { parse } from "csv-parse";
 import { DateTime } from "luxon";
+import { createCSVWriter } from "./helpers.js";
+
+const OUTPUT_FILE = "results.csv";
 
 const files = await readdir("./");
 files.sort();
@@ -56,3 +59,23 @@ for (const file of files) {
 }
 
 console.log(students);
+
+const csvWriter = createCSVWriter(OUTPUT_FILE, [
+  "uni",
+  "app_engine",
+  "app_engine_200",
+  "build_trigger",
+  "build",
+  "build_success",
+]);
+
+for (const [uni, checks] of Object.entries(students)) {
+  csvWriter.write({
+    uni,
+    app_engine: checks.app_engine,
+    app_engine_200: checks.app_engine_200,
+    build_trigger: checks.build_trigger,
+    build: checks.build,
+    build_success: checks.build_success,
+  });
+}
