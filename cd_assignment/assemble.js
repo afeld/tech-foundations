@@ -32,51 +32,60 @@ const getResultDate = (file) => {
   });
 };
 
-const alreadyCompleted = (uni, check) => {
-  return !!students[uni][check];
-};
+const gatherResults = async () => {
+  const students = {};
 
-const students = {};
+  const alreadyCompleted = (uni, check) => {
+    return !!students[uni][check];
+  };
 
-for (const file of files) {
-  const resultDate = getResultDate(file);
-  if (!resultDate) {
-    // not a result file
-    continue;
-  }
-  console.log("Processing file:", file);
+  for (const file of files) {
+    const resultDate = getResultDate(file);
+    if (!resultDate) {
+      // not a result file
+      continue;
+    }
+    console.log("Processing file:", file);
 
-  const parser = fs.createReadStream(file).pipe(parse({ columns: true }));
-  for await (const row of parser) {
-    const uni = row.uni;
-    // initialize
-    students[uni] = students[uni] || {};
+    const parser = fs.createReadStream(file).pipe(parse({ columns: true }));
+    for await (const row of parser) {
+      const uni = row.uni;
+      // initialize
+      students[uni] = students[uni] || {};
 
-    for (const check of checks) {
-      if (alreadyCompleted(uni, check)) {
-        continue;
-      }
+      for (const check of checks) {
+        if (alreadyCompleted(uni, check)) {
+          continue;
+        }
 
-      if (row[check] === "Y") {
-        // completed on this day
-        students[uni][check] = resultDate.toISODate();
-      } else {
-        // still not completed
-        students[uni][check] = null;
+        if (row[check] === "Y") {
+          // completed on this day
+          students[uni][check] = resultDate.toISODate();
+        } else {
+          // still not completed
+          students[uni][check] = null;
+        }
       }
     }
   }
-}
 
-const csvWriter = createCSVWriter(OUTPUT_FILE, COLUMNS);
+  return students;
+};
 
-for (const [uni, checks] of Object.entries(students)) {
-  csvWriter.write({
-    uni,
-    app_engine: checks.app_engine,
-    app_engine_200: checks.app_engine_200,
-    build_trigger: checks.build_trigger,
-    build: checks.build,
-    build_success: checks.build_success,
-  });
-}
+const saveResults = (students) => {
+  const csvWriter = createCSVWriter(OUTPUT_FILE, COLUMNS);
+
+  for (const [uni, checks] of Object.entries(students)) {
+    csvWriter.write({
+      uni,
+      app_engine: checks.app_engine,
+      app_engine_200: checks.app_engine_200,
+      build_trigger: checks.build_trigger,
+      build: checks.build,
+      build_success: checks.build_success,
+    });
+  }
+};
+
+const students = await gatherResults();
+saveResults(students);
