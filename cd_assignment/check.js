@@ -2,14 +2,14 @@
 import { ServicesClient } from "@google-cloud/appengine-admin";
 import { CloudBuildClient } from "@google-cloud/cloudbuild";
 import { exec } from "child_process";
-import fs from "fs";
-import { promisify } from "util";
+import fs from "node:fs";
+import { promisify } from "node:util";
 import { parse } from "csv-parse";
-import { stringify } from "csv-stringify";
 import fetch from "node-fetch";
 import { DateTime } from "luxon";
+import { createCSVWriter } from "./helpers.js";
 
-const INPUT_FILE = "./terraform/students.csv";
+const INPUT_FILE = "../terraform/students.csv";
 // write one per day for checking late work
 const date = DateTime.local().toISODate();
 const OUTPUT_FILE = `cd_results_${date}.csv`;
@@ -18,20 +18,6 @@ const appEngineClient = new ServicesClient();
 const cloudBuildClient = new CloudBuildClient();
 
 const execP = promisify(exec);
-
-const createCSVWriter = (filename, columns) => {
-  const stringifier = stringify({
-    header: true,
-    columns: columns,
-    cast: {
-      boolean: (value) => (value ? "Y" : "N"),
-    },
-  });
-  const writableStream = fs.createWriteStream(filename);
-  stringifier.pipe(writableStream);
-
-  return stringifier;
-};
 
 const hasAppEngine = async (projectId) => {
   try {
