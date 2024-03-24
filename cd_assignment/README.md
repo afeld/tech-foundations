@@ -16,6 +16,12 @@ For the [Continuous Deployment](https://courseworks2.columbia.edu/courses/198128
    node cd_hw_check.js
    ```
 
+Then, assemble the results with
+
+```sh
+node assemble.js
+```
+
 You can check a particular student with
 
 ```sh
