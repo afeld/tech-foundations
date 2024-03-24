@@ -75,7 +75,11 @@ const gatherResults = async () => {
 const saveResults = (students) => {
   const csvWriter = createCSVWriter(OUTPUT_FILE, COLUMNS);
 
-  for (const [uni, checks] of Object.entries(students)) {
+  const unis = Object.keys(students);
+  unis.sort();
+
+  for (const uni of unis) {
+    const checks = students[uni];
     csvWriter.write({
       uni,
       app_engine: checks.app_engine,
