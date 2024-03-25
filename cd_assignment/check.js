@@ -1,5 +1,6 @@
 // https://cloud.google.com/nodejs/docs/reference/appengine-admin/latest#using-the-client-library
 import { ServicesClient } from "@google-cloud/appengine-admin";
+import { v1 as AssetsClient } from "@google-cloud/asset";
 import { CloudBuildClient } from "@google-cloud/cloudbuild";
 import { exec } from "child_process";
 import fs from "node:fs";
@@ -15,9 +16,24 @@ const date = DateTime.local().toISODate();
 const OUTPUT_FILE = `cd_results_${date}.csv`;
 
 const appEngineClient = new ServicesClient();
+const assetsClient = new AssetsClient.AssetServiceClient();
 const cloudBuildClient = new CloudBuildClient();
 
 const execP = promisify(exec);
+
+const listAssets = async (projectId, assetTypes) => {
+  const projectResource = `projects/${projectId}`;
+  const request = {
+    parent: projectResource,
+    assetTypes,
+    contentType: "RESOURCE",
+    // (Optional) Add readTime parameter to list assets at the given time instead of current time:
+    //   readTime: { seconds: 1593988758 },
+  };
+
+  const result = await assetsClient.listAssets(request);
+  return result[0];
+};
 
 const hasAppEngine = async (projectId) => {
   try {
@@ -48,12 +64,12 @@ const appEngineStatus = async (projectId) => {
   return response.ok;
 };
 
-const isValidTrigger = (trigger) => {
-  // https://cloud.google.com/nodejs/docs/reference/cloudbuild/latest/cloudbuild/protos.google.devtools.cloudbuild.v1.ibuildtrigger
+const isValidTrigger = (triggerAsset) => {
+  const fields = triggerAsset.resource.data.fields;
   if (
-    trigger.buildTemplate == "filename" &&
-    trigger.triggerTemplate &&
-    trigger.triggerTemplate.repoName
+    fields.filename &&
+    fields.triggerTemplate &&
+    fields.triggerTemplate.repoName
   ) {
     return true;
   }
@@ -62,11 +78,12 @@ const isValidTrigger = (trigger) => {
 
 const hasCloudBuildTrigger = async (projectId) => {
   try {
-    // https://cloud.google.com/nodejs/docs/reference/cloudbuild/latest/cloudbuild/v1.cloudbuildclient#_google_cloud_cloudbuild_v1_CloudBuildClient_listBuildTriggersAsync_member_1_
-    const triggers = cloudBuildClient.listBuildTriggersAsync({ projectId });
+    const assets = await listAssets(projectId, [
+      "cloudbuild.googleapis.com/BuildTrigger",
+    ]);
     // check if any valid
-    for await (const trigger of triggers) {
-      if (isValidTrigger(trigger)) {
+    for await (const asset of assets) {
+      if (isValidTrigger(asset)) {
         return true;
       }
     }
