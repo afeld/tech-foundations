@@ -12,6 +12,7 @@ locals {
     "appengine.googleapis.com",
     "bigquery.googleapis.com",
     "cloudaicompanion.googleapis.com",
+    "cloudasset.googleapis.com",
     "sourcerepo.googleapis.com",
     "sqladmin.googleapis.com",
   ], local.has_billing_account ? local.services_that_require_billing : [])
