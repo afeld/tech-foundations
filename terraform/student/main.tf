@@ -5,7 +5,8 @@ resource "google_project" "student" {
 
   lifecycle {
     # we don't control the billing account, so ignore when set by the student
-    ignore_changes  = [billing_account]
-    prevent_destroy = true
+    ignore_changes = [billing_account]
+    # safeguard to avoid deleting student work
+    # prevent_destroy = true
   }
 }

@@ -63,6 +63,14 @@ If you're using Google Cloud for something outside of this class, we suggest [cr
 
 We won't use the full $50 credit for this class, so you're welcome to take advantage of the remainder for other things. If you use it up, you'll start spending against your [Free Trial](https://cloud.google.com/free). Beyond that, you'll have to [pay](https://cloud.google.com/billing/docs/how-to/payment-methods).
 
+## Cleanup
+
+At the end of the course:
+
+1. Delete all rows from `terraform/students.csv`.
+1. Delete the `instructors` local values.
+1. Run `terraform apply -parallelism=400`
+
 ## Troubleshooting students
 
 Instructors should have access to all student Projects. In the selector in the top of the nav bar, switch to their Project; the name ends with their UNI.

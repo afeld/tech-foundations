@@ -1,6 +1,6 @@
 locals {
   students    = csvdecode(file("${path.module}/students.csv"))
-  instructors = ["alf2215", "cv2464", "ph2698", "vv2358"]
+  instructors = ["alf2215"]
   unis        = setunion([for student in local.students : student.Uni], local.instructors)
 
   # managed by CUIT
