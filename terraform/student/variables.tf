@@ -1,5 +1,6 @@
 variable "folder_id" {
-  type = string
+  type     = string
+  nullable = true
 }
 
 variable "uni" {

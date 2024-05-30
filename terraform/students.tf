@@ -2,9 +2,8 @@ locals {
   students    = csvdecode(file("${path.module}/students.csv"))
   instructors = ["alf2215"]
   unis        = setunion([for student in local.students : student.Uni], local.instructors)
-
-  # managed by CUIT
-  folder_id = "781139849228"
+  # CUIT doesn't want the projects to exist under the columbia.edu Google Cloud organization, which they manage
+  folder_id = null
 }
 
 module "students" {
